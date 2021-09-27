@@ -1,4 +1,4 @@
-- include_vars: vars.yml
+- include_vars: tasks/vars.yml
 - name: IP Forward set
   become: true
   command: sysctl -w net.ipv4.ip_forward=1

@@ -7,7 +7,6 @@
       apt:
         update_cache: yes
         autoremove: yes
-        upgrade: yes
       changed_when: true
 
   tasks:

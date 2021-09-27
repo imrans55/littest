@@ -1,4 +1,4 @@
-- include_vars: tasks/vars.yml
+#- include_vars: tasks/vars.yml
 - name: IP Forward set
   become: true
   command: sysctl -w net.ipv4.ip_forward=1
@@ -7,13 +7,13 @@
   shell: printf
     'auto eth0\n
       iface eth0 inet static\n
-      address {{ ip }}\n
+      address 192.168.201.153\n
       netmask 255.255.255.0\n
-      gateway {{ gateway }}\n
+      gateway 192.168.203.254\n
       \n
     auto eth0:0\n
       iface eth0:0 inet static\n
-      address {{ int_ip }}\n
+      address 10.11.3.254\n
       netmask 255.255.255.0' >> /etc/network/interfaces
 
 - name: ifup

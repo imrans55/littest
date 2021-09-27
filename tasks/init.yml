@@ -13,4 +13,4 @@
     auto eth0:0\n
       iface eth0:0 inet static\n
       address 10.11.3.254\n
-      netmask 255.255.255.0" >> /etc/network/interfaces'
+      netmask 255.255.255.0' >> /etc/network/interfaces

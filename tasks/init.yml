@@ -20,6 +20,10 @@
   become: true
   command: ifup eth0:0
 
+- name: Install apt-utils
+  become: true
+  command: sudo apt-get install -y apt-utils
+
 - name: Installing packages
   become: true
   apt:

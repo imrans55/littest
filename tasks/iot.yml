@@ -18,13 +18,11 @@
   
 - name: Installing Cloud SDK ... ... ...
   become: yes
-  expect:
-    apt:
-      update_cache: true
-      name: google-cloud-sdk
-    responses:
-      'Do you want to continue?' : 'y'
-      'Do you want to continue?' : 'y'
+  
+  apt:
+    update_cache: true
+    name: google-cloud-sdk
+    
 
 - name: Clone IOT node
   git: 

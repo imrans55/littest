@@ -3,9 +3,14 @@
   become: yes
   shell: echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
 
+- name: hack to resolve Problem with MergeList Issue
+  become: true
+  shell: 'find /var/lib/apt/lists -maxdepth 1 -type f -exec rm -v {} \;'
+
 - name: Required packages
   become: yes
   apt:
+    update_cache: yes
     name:
       - ca-certificates
       - gnupg

@@ -1,6 +1,41 @@
 - include_vars: tasks/vars.yml
 
+- name: Required packages
+  become: yes
+  apt:
+    update_cache: yes
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - gnupg
+      - curl 
+      
+- name: Installing Cloud SDK
+  become: yes
+  shell: echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
 
+- name: Installing Cloud SDK ...
+  become: yes
+  shell: curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+  #shell: curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+  
+- name: Installing Cloud SDK ... ... ...
+  become: yes
+  apt:
+    update_cache: true
+    name: google-cloud-sdk
+
+- name: Initialize gcloud
+  become: yes
+  command: gcloud auth activate-service-account --key-file /home/jetson/lit_creds.json
+
+- name: Installing NodeJS ... 
+  become: true
+  shell: curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+
+- name: Installing NodeJS ... ...
+  become: true
+  command: sudo apt-get install -y nodejs
 
 - name: Installing NodeJS ... ... ...
   become: yes

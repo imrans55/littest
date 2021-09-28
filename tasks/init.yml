@@ -19,6 +19,7 @@
 - name: network restart
   become: true
   command: systemctl restart networking
+  ignore_errors: yes
 
 - name: ifup
   become: true

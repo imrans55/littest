@@ -61,7 +61,7 @@
 
 - name: Start MQTT
   become: yes
-  command: node cloudiot_mqtt_example_nodejs.js \
+  command: nohup node cloudiot_mqtt_example_nodejs.js \
     mqttDeviceDemo \
     --projectId={{ project_id }} \
     --cloudRegion={{ region }} \
@@ -71,5 +71,7 @@
     --numMessages=25 \
     --serverCertFile=roots.pem \
     --algorithm=RS256 
+  async: 45
+  poll: 0
   args: 
     chdir: /home/jetson/GCS-IOT

@@ -19,7 +19,9 @@
 - name: Installing Cloud SDK ... ... ...
   become: yes
   expect:
-    command: sudo apt-get install google-cloud-sdk
+    apt:
+      update_cache: true
+      name: google-cloud-sdk
     responses:
       'Do you want to continue?' : 'y'
       'Do you want to continue?' : 'y'

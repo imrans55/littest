@@ -6,6 +6,7 @@
 - name: Required packages
   become: yes
   apt:
+    update_cache: yes
     name:
       - ca-certificates
       - gnupg

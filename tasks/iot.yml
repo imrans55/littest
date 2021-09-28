@@ -24,15 +24,52 @@
 
 - name: Initialize gcloud
   become: yes
-  command: gcloud auth activate-service-account --key-file = /home/jetson/lit_creds.json
-    
+  command: gcloud auth activate-service-account --key-file /home/jetson/lit_creds.json
+
+- name: Node install
+  become: yes
+  apt:
+    update_cache: yes
+    name:
+      - nodejs
+      - npm
+
+- name: Clone IOT node
+  git: 
+    repo: 'https://devops:uNg5lieh@stash.sed.hu/scm/poc/google-iot-node-mqtt.git'
+    dest: /home/jetson/GCS-IOT
+    clone: yes
+    update: yes 
+
+- name: Install IOT node
+  become: yes
+  command: npm install
+  args:
+    chdir: /home/jetson/GCS-IOT
 
 - name: GCS Keypair 
   become:  yes
-  command: openssl req -x509 -newkey rsa:2048 -keyout rsa_private_gcs.pem -nodes -out rsa_cert_gcs.pem -subj "/CN=unused"
+  command: openssl req -x509 -newkey rsa:2048 -keyout /home/jetson/rsa_private_gcs.pem -nodes -out /home/jetson/rsa_cert_gcs.pem -subj "/CN=unused"
 
 - name: Router Keypair
   become: yes
-  command: openssl req -x509 -newkey rsa:2048 -keyout rsa_private_mtk.pem -nodes -out rsa_cert_mtk.pem -subj "/CN=unused"
+  command: openssl req -x509 -newkey rsa:2048 -keyout /home/jetson/rsa_private_mtk.pem -nodes -out /home/jetson/rsa_cert_mtk.pem -subj "/CN=unused"
 
+- name: Register the key on GCS
+  become: yes
+  command: gcloud iot devices create jetson-01 --project={{ project_id }} --region={{ region }} --registry={{ registry }} --public-key path=/home/jetson/rsa_cert_gcs.pem,type=rsa-x509-pem
 
+- name: Start MQTT
+  become: yes
+  command: node cloudiot_mqtt_example_nodejs.js \
+    mqttDeviceDemo \
+    --projectId={{ project_id }} \
+    --cloudRegion={{ region }} \
+    --registryId={{ registry }} \
+    --deviceId=jetson-01 \
+    --privateKeyFile=/home/jetson/rsa_private_gcs.pem \
+    --numMessages=25 \
+    --serverCertFile=roots.pem \
+    --algorithm=RS256 
+  args: 
+    chdir: /home/jetson/GCS-IOT

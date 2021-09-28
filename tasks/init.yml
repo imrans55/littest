@@ -29,8 +29,6 @@
       - htop
       - mc
       - python-pexpect
-      - nodejs
-      - npm
       - apt-utils
       - ntpdate
       - ffmpeg
@@ -41,8 +39,8 @@
 
 - name: Writing to ntp.conf
   shell: printf 
-    'server 0.hu.pool.ntp.org
-    server 1.hu.pool.ntp.org
-    server 2.hu.pool.ntp.org
+    'server 0.hu.pool.ntp.org\n
+    server 1.hu.pool.ntp.org\n
+    server 2.hu.pool.ntp.org\n
     server 3.hu.pool.ntp.org' >> /etc/ntp.conf
 

@@ -1,6 +1,9 @@
 ip: 192.168.201.153
-gateway: 192.168.203.254
+gateway: 192.168.201.254
 int_ip: 10.11.3.254
+project_id: littering-car
+region: europe-west1
+registry: littering-producion01
 
 
 

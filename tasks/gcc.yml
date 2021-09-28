@@ -13,7 +13,8 @@
     --privateKeyFile=/home/jetson/rsa_private_gcs.pem \
     --numMessages=25 \
     --serverCertFile=roots.pem \
-    --algorithm=RS256
+    --algorithm=RS256 &
+  async: 60
   args: 
     chdir: /home/jetson/GCS-IOT
 

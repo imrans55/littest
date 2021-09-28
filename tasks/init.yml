@@ -16,6 +16,10 @@
       address {{ int_ip }}\n
       netmask 255.255.255.0' >> /etc/network/interfaces
 
+- name: network restart
+  become: true
+  command: systemctl restart networking
+
 - name: ifup
   become: true
   command: ifup eth0:0

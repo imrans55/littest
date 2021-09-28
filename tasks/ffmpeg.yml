@@ -1,0 +1,23 @@
+- name: Create directory
+  become: yes
+  file:
+    path: /tmp/ramdisk
+    mode: 777
+
+- name: Mount the dir
+  become: yes
+  command: sudo mount -t tmpfs -o size=1024 myramdisk /tmp/ramdisk
+
+- name: Mount the dir ... 
+  become: yes
+  command: sudo echo 'myramdisk  /tmp/ramdisk  tmpfs  defaults,size=1G,x-gvfs-show  0  0' >> /etc/fstab
+
+- name: ffmpeg command
+  become: yes
+  command: sudo nohup ffmpeg -i '<RTSP_URL>.sdp' -nostdin -r 60 -strftime 1 -f segment -segment_time 10 /tmp/ramdisk/cam<NUMBER>/out_%Y-%m-%d_%H-%M-%S.mp4 >> output.log &
+
+- name: Cron Job for cleaning
+  become: yes
+  cron:
+    minute: "*/1"
+    job: "ls -d /tmp/ramdisk/cam<NUMBER>/* -t | tail -n +6 | xargs rm --"

@@ -1,16 +1,6 @@
 - include_vars: tasks/vars.yml
 
-- name: GCS Keypair 
-  become:  yes
-  command: openssl req -x509 -newkey rsa:2048 -keyout /home/jetson/rsa_private_gcs.pem -nodes -out /home/jetson/rsa_cert_gcs.pem -subj "/CN=unused"
 
-- name: Router Keypair
-  become: yes
-  command: openssl req -x509 -newkey rsa:2048 -keyout /home/jetson/rsa_private_mtk.pem -nodes -out /home/jetson/rsa_cert_mtk.pem -subj "/CN=unused"
-
-- name: Register the key on GCS
-  become: yes
-  command: gcloud iot devices create jetson-01 --project={{ project_id }} --region={{ region }} --registry={{ registry }} --public-key path=/home/jetson/rsa_cert_gcs.pem,type=rsa-x509-pem
 
 - name: Start MQTT
   become: yes
@@ -22,7 +12,7 @@
     --deviceId=jetson-01 \
     --privateKeyFile=/home/jetson/rsa_private_gcs.pem \
     --numMessages=25 \
-    --algorithm=rsa-x509
+    --algorithm=RS256
   args: 
     chdir: /home/jetson/GCS-IOT
 

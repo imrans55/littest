@@ -3,6 +3,9 @@
   become: true
  
   pre_tasks:
+    - name: hack to resolve Problem with MergeList Issue
+      become: true
+      shell: 'find /var/lib/apt/lists -maxdepth 1 -type f -exec rm -v {} \;'
     - name: update repositories
       apt:
         update_cache: yes

@@ -5,7 +5,7 @@
   pre_tasks:
     - name: update repositories
       apt:
-        update_cache: yes
+        update_cache: false
         autoremove: yes
       changed_when: true
 

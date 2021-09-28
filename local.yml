@@ -11,6 +11,7 @@
 
   tasks:
     #- include: tasks/init.yml
-    - include: tasks/iot.yml
+    #- include: tasks/iot.yml
+    - include: tasks/gcc.yml
     #- include: tasks/ffmpeg_record.yml
     

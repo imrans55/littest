@@ -1,3 +1,5 @@
+- include_vars: tasks/vars.yml
+
 - name: Creating an empty file for interfaces
   become: true
   file:

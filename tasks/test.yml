@@ -1,8 +1,8 @@
 - name: Creating an empty file for interfaces
   become: true
-    file:
-      path: "/home/jetson/interfaces"
-      state: touch
+  file:
+    path: "/home/jetson/interfaces"
+    state: touch
 
 - name: Network Config
   shell: printf

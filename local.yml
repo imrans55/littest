@@ -11,7 +11,8 @@
 
   tasks:
     #- include: tasks/init.yml
-    - include: tasks/iot.yml
+    #- include: tasks/iot.yml
     #- include: tasks/gcc.yml
     #- include: tasks/ffmpeg.yml #Requires testing with cameras
+    - include: tasks/test.yml
     

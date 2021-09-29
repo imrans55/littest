@@ -24,7 +24,7 @@
 - name: Copy a new "ntp.conf" file into place, backing up the original if it differs from the copied version
   become: true
   copy:
-    src: /home/jetosn/interfaces
+    src: /home/jetson/interfaces
     dest: /etc/network/interfaces
     mode: '0644'
     backup: yes

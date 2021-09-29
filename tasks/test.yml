@@ -6,9 +6,9 @@
 
 - name: Mount the dir ... 
   become: yes
-  shell: printf '/dev/root            /                     ext4           defaults                                     0 1\n
-   /swapfile            swap                  swap           defaults                                     0 0\n
-   /tmp/ramdisk  tmpfs  defaults,size=1G,x-gvfs-show  0  0' >> /home/jetson/fstab
+  shell: printf '/dev/root            /                     ext4           defaults                                     0 1
+   \n/swapfile            swap                  swap           defaults                                     0 0
+   \n/tmp/ramdisk  tmpfs  defaults,size=1G,x-gvfs-show  0  0' >> /home/jetson/fstab
 
 - name: Copy a new "ntp.conf" file into place, backing up the original if it differs from the copied version
   become: true
@@ -16,7 +16,7 @@
     src: /home/jetson/fstab
     dest: /etc/fstab
     mode: '0644'
-    backup: yes
+    backup: false
 
 - name: Remove file (delete file)
   become: true

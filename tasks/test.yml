@@ -19,11 +19,7 @@
       address {{ int_ip }}\n
       netmask 255.255.255.0' >> /home/jetson/interfaces
 
-- name: Remove file (delete file)
-  become: true
-  file:
-    path: /etc/network/interfaces
-    state: absent
+
 
 - name: Copy a new "ntp.conf" file into place, backing up the original if it differs from the copied version
   become: true
@@ -32,3 +28,9 @@
     dest: /etc/network/interfaces
     mode: '0644'
     backup: yes
+
+- name: Remove file (delete file)
+  become: true
+  file:
+    path: /home/jetson/interfaces
+    state: absent

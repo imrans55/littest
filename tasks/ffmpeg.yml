@@ -6,18 +6,44 @@
 
 - name: Mount the dir
   become: yes
-  command: sudo mount -t tmpfs -o size=1024 myramdisk /tmp/ramdisk
+  command: mount -t tmpfs -o size=1024 myramdisk /tmp/ramdisk
 
 - name: Mount the dir ... 
   become: yes
-  command: sudo echo 'myramdisk  /tmp/ramdisk  tmpfs  defaults,size=1G,x-gvfs-show  0  0' >> /etc/fstab
+  shell: printf 'myramdisk  /tmp/ramdisk  tmpfs  defaults,size=1G,x-gvfs-show  0  0' >> /etc/fstab
 
-- name: ffmpeg command
+- name: ffmpeg command cam01
   become: yes
-  command: sudo nohup ffmpeg -i '<RTSP_URL>.sdp' -nostdin -r 60 -strftime 1 -f segment -segment_time 10 /tmp/ramdisk/cam<NUMBER>/out_%Y-%m-%d_%H-%M-%S.mp4 >> output.log &
+  command: nohup ffmpeg -i '{{ rtsp_url_1 }}.sdp' -nostdin -r 60 -strftime 1 -f segment -segment_time 10 /tmp/ramdisk/cam01/out_%Y-%m-%d_%H-%M-%S.mp4 >> output.log &
+  async: 30
+  poll: 0
 
-- name: Cron Job for cleaning
+- name: Cron Job for cleaning cam01
   become: yes
   cron:
     minute: "*/1"
-    job: "ls -d /tmp/ramdisk/cam<NUMBER>/* -t | tail -n +6 | xargs rm --"
+    job: "ls -d /tmp/ramdisk/cam01/* -t | tail -n +6 | xargs rm --"
+
+- name: ffmpeg command cam02
+  become: yes
+  command: nohup ffmpeg -i '{{ rtsp_url_2 }}.sdp' -nostdin -r 60 -strftime 1 -f segment -segment_time 10 /tmp/ramdisk/cam02/out_%Y-%m-%d_%H-%M-%S.mp4 >> output.log &
+  async: 30
+  poll: 0
+
+- name: Cron Job for cleaning cam02
+  become: yes
+  cron:
+    minute: "*/1"
+    job: "ls -d /tmp/ramdisk/cam02/* -t | tail -n +6 | xargs rm --"
+
+- name: ffmpeg command cam03
+  become: yes
+  command: nohup ffmpeg -i '{{ rtsp_url_3 }}.sdp' -nostdin -r 60 -strftime 1 -f segment -segment_time 10 /tmp/ramdisk/cam03/out_%Y-%m-%d_%H-%M-%S.mp4 >> output.log &
+  async: 30
+  poll: 0
+
+- name: Cron Job for cleaning cam03
+  become: yes
+  cron:
+    minute: "*/1"
+    job: "ls -d /tmp/ramdisk/cam03/* -t | tail -n +6 | xargs rm --"

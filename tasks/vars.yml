@@ -4,6 +4,8 @@ int_ip: 10.11.3.254
 project_id: littering-car
 region: europe-west1
 registry: littering-producion01
-
+rtsp_url_1: 
+rtsp_url_2:
+rtsp_url_3:
 
 

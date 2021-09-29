@@ -8,9 +8,31 @@
   become: yes
   command: mount -t tmpfs -o size=1024 myramdisk /tmp/ramdisk
 
+- name: Creating an empty file for fstab
+  become: true
+  file:
+    path: "/home/jetson/fstab"
+    state: touch
+
 - name: Mount the dir ... 
   become: yes
-  shell: printf 'myramdisk  /tmp/ramdisk  tmpfs  defaults,size=1G,x-gvfs-show  0  0' >> /etc/fstab
+  shell: printf '/dev/root            /                     ext4           defaults                                     0 1
+   \n/swapfile            swap                  swap           defaults                                     0 0
+   \n/tmp/ramdisk  tmpfs  defaults,size=1G,x-gvfs-show  0  0' >> /home/jetson/fstab
+
+- name: Copy a new "fstab" file into place, backing up the original if it differs from the copied version
+  become: true
+  copy:
+    src: /home/jetson/fstab
+    dest: /etc/fstab
+    mode: '0644'
+    backup: true
+
+- name: Remove file (delete file)
+  become: true
+  file:
+    path: /home/jetson/fstab
+    state: absent
 
 - name: ffmpeg command cam01
   become: yes
@@ -21,6 +43,7 @@
 - name: Cron Job for cleaning cam01
   become: yes
   cron:
+    name: Cam01 Cleaning
     minute: "*/1"
     job: "ls -d /tmp/ramdisk/cam01/* -t | tail -n +6 | xargs rm --"
 
@@ -33,6 +56,7 @@
 - name: Cron Job for cleaning cam02
   become: yes
   cron:
+    name: Cam02 Cleaning
     minute: "*/1"
     job: "ls -d /tmp/ramdisk/cam02/* -t | tail -n +6 | xargs rm --"
 
@@ -45,5 +69,6 @@
 - name: Cron Job for cleaning cam03
   become: yes
   cron:
+    name: Cam03 Cleaning
     minute: "*/1"
     job: "ls -d /tmp/ramdisk/cam03/* -t | tail -n +6 | xargs rm --"

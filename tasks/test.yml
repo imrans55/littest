@@ -3,5 +3,6 @@
 - name: Cron Job for cleaning cam02
   become: yes
   cron:
+    name: list
     minute: "*/1"
     job: "ls"
